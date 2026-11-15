@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Payroll Karyawan - Array & Looping</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-100 p-8 font-sans text-slate-800">
+
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-md">
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-slate-900">Data Payroll Karyawan</h1>
+                <p class="text-sm text-slate-500">Menampilkan Array of Objects secara dinamis dengan JavaScript</p>
+            </div>
+            <div class="bg-blue-50 border border-blue-200 px-4 py-2 rounded-lg">
+                <span class="text-xs text-blue-600 block">Total Pengeluaran Gaji:</span>
+                <span id="totalPayroll" class="font-bold text-lg text-blue-900">Rp 0</span>
+            </div>
+        </div>
+
+        <table class="w-full border-collapse">
+            <thead>
+                <tr class="bg-slate-200 text-left text-sm uppercase text-slate-700">
+                    <th class="p-3 border">NIP</th>
+                    <th class="p-3 border">Nama Lengkap</th>
+                    <th class="p-3 border">Divisi</th>
+                    <th class="p-3 border">Gaji Pokok</th>
+                    <th class="p-3 border">Status Pajak</th>
+                </tr>
+            </thead>
+            <!-- Perhatikan: tbody ini sengaja dikosongkan, akan diisi oleh JavaScript -->
+            <tbody id="tabelBody" class="text-sm">
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Simulasi data yang nantinya berasal dari Database Oracle / API Laravel
+        const dataKaryawan = [
+            { nip: "EMP001", nama: "Ahmad", divisi: "IT Development", gaji: 9500000 },
+            { nip: "EMP002", nama: "Amad", divisi: "Human Resources", gaji: 5500000 },
+            { nip: "EMP003", nama: "Ahad", divisi: "Finance", gaji: 7200000 },
+            { nip: "EMP004", nama: "Ahmed", divisi: "Senior Human Resources", gaji: 11500000 },
+            { nip: "EMP005", nama: "Ahud", divisi: "Junior IT Development", gaji: 4500000 },
+            // TUGAS 1: Tambahkan minimal 2 objek karyawan lagi di dalam array ini (satu bergaji di atas 10 juta, satu di bawah 6 juta)
+        ];
+
+        const tbody = document.getElementById('tabelBody');
+        let totalSeluruhGaji = 0;
+        let barisHTML = "";
+
+        // Melakukan perulangan (looping) untuk setiap item karyawan di dalam dataKaryawan
+        dataKaryawan.forEach(function (item) {
+            // TUGAS 2: Tambahkan gaji setiap karyawan ke dalam variabel 'totalSeluruhGaji'
+            // Petunjuk: totalSeluruhGaji = totalSeluruhGaji + item.gaji;
+            totalSeluruhGaji = totalSeluruhGaji + item.gaji;
+
+            // Menentukan label status pajak menggunakan if-else
+            let statusPajak = "";
+            if (item.gaji >= 6000000) {
+                statusPajak = '<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-xs font-semibold">Kena Pajak</span>';
+            } else {
+                statusPajak = '<span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-semibold">Bebas Pajak</span>';
+            }
+
+            // Menyusun baris <tr> menggunakan Backtick (`)
+            barisHTML += `
+                <tr class="hover:bg-slate-50">
+                    <td class="p-3 border font-mono">${item.nip}</td>
+                    <td class="p-3 border font-medium">${item.nama}</td>
+                    <td class="p-3 border">${item.divisi}</td>
+                    <td class="p-3 border">Rp ${item.gaji.toLocaleString('id-ID')}</td>
+                    <td class="p-3 border">${statusPajak}</td>
+                </tr>
+            `;
+        });
+
+        // Memasukkan seluruh baris yang sudah disusun ke dalam <tbody>
+        tbody.innerHTML = barisHTML;
+
+        // TUGAS 3: Tampilkan nilai 'totalSeluruhGaji' ke dalam elemen ber-ID 'totalPayroll' lengkap dengan format 'Rp ' dan .toLocaleString('id-ID')
+        document.getElementById('totalPayroll').innerText = "Rp " + totalSeluruhGaji.toLocaleString('id-ID');
+    </script>
+
+</body>
+
+</html>
