@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Gaji Karyawan - Minggu 2</title>
+    <!-- Memanggil Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-100 p-8 font-sans text-slate-800">
+
+    <div class="max-w-lg mx-auto bg-white p-6 rounded-xl shadow-md">
+        <h1 class="text-2xl font-bold text-slate-900 mb-2">Simulasi Slip Gaji</h1>
+        <p class="text-sm text-slate-500 mb-6">Latihan Tailwind CSS & Dasar JavaScript</p>
+
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-1">Nama Karyawan</label>
+                <input type="text" id="namaKaryawan" placeholder="Masukkan nama..."
+                    class="w-full border border-slate-300 rounded-lg p-2 focus:outline-blue-600">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-1">Gaji Pokok (Rp)</label>
+                <input type="number" id="gajiPokok" placeholder="Contoh: 5000000"
+                    class="w-full border border-slate-300 rounded-lg p-2 focus:outline-blue-600">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-1">Level Jabatan</label>
+                <select id="jabatan" class="w-full border border-slate-300 rounded-lg p-2 focus:outline-blue-600">
+                    <option value="Staff">Staff (Tunjangan Rp 1.000.000)</option>
+                    <option value="Supervisor">Supervisor (Tunjangan Rp 2.500.000)</option>
+                    <option value="Manager">Manager (Tunjangan Rp 5.000.000)</option>
+                </select>
+            </div>
+
+            <button onclick="hitungGaji()"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition">
+                Hitung Gaji Bersih
+            </button>
+        </div>
+
+        <!-- Area Hasil Perhitungan -->
+        <div id="kotakHasil" class="mt-6 p-4 bg-slate-50 border border-slate-200 rounded-lg hidden">
+            <h2 class="font-bold text-lg mb-2">Rincian Gaji:</h2>
+            <p id="teksNama"></p>
+            <p id="teksGajiKotor"></p>
+            <p id="teksPajak" class="text-red-600"></p>
+            <hr class="my-2">
+            <p id="teksGajiBersih" class="font-bold text-green-700 text-lg"></p>
+        </div>
+    </div>
+
+    <script>
+        function hitungGaji() {
+            const nama = document.getElementById('namaKaryawan').value;
+            const jabatan = document.getElementById('jabatan').value;
+            const gapok = Number(document.getElementById('gajiPokok').value);
+
+            // 1. Validasi Input: Cek jika nama kosong ATAU gaji pokok kurang dari/sama dengan 0
+            if (nama === "" || gapok <= 0) {
+                alert("Harap isi Nama Karyawan dan Gaji Pokok dengan benar!");
+                return; // Menghentikan proses perhitungan di bawahnya
+            }
+
+            // 2. Menentukan Tunjangan Otomatis berdasarkan Jabatan
+            let tunjangan = 0;
+            if (jabatan === "Manager") {
+                tunjangan = 5000000;
+            } else if (jabatan === "Supervisor") {
+                tunjangan = 2500000;
+            } else {
+                tunjangan = 1000000; // Selain Manager & Supervisor berarti Staff
+            }
+
+            const gajiKotor = gapok + tunjangan;
+
+            // TUGAS 1: Buat variabel 'let pajak = 0;'
+            // Gunakan if-else untuk menghitung pajak progresif dengan aturan:
+            // - Jika gajiKotor >= 10000000 (10 Juta ke atas), maka pajak adalah 10% (0.10 * gajiKotor)
+            // - Jika gajiKotor >= 6000000 (6 Juta s/d di bawah 10 Juta), maka pajak adalah 5% (0.05 * gajiKotor)
+            // - Selain itu (di bawah 6 Juta), bebas pajak (pajak = 0)
+            let pajak = 0;
+            if (gajiKotor >= 10000000) {
+                pajak = 0.10 * gajiKotor;
+            } else if (gajiKotor >= 6000000) {
+                pajak = 0.05 * gajiKotor;
+            } else {
+                pajak = 0;
+            }
+
+            const gajiBersih = gajiKotor - pajak;
+
+            // 3. Menampilkan hasil ke layar dengan format titik ribuan (.toLocaleString('id-ID'))
+            document.getElementById('kotakHasil').classList.remove('hidden');
+            document.getElementById('teksNama').innerText = "Nama: " + nama + " (" + jabatan + ")";
+            document.getElementById('teksGajiKotor').innerText = "Gaji Kotor: Rp " + gajiKotor.toLocaleString('id-ID');
+
+            // TUGAS 2: Tampilkan teksPajak dan teksGajiBersih lengkap dengan .toLocaleString('id-ID')
+            document.getElementById('teksPajak').innerText = "Pajak: Rp " + pajak.toLocaleString('id-ID');
+            document.getElementById('teksGajiBersih').innerText = "Gaji Bersih: Rp " + gajiBersih.toLocaleString('id-ID');
+        }
+    </script>
+
+</body>
+
+</html>
