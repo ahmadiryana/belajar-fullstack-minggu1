@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Karyawan Interaktif - Minggu 3</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-100 p-8 font-sans text-slate-800">
+
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <!-- KOLOM KIRI: Form Tambah Karyawan -->
+        <div class="bg-white p-6 rounded-xl shadow-md h-fit">
+            <h2 class="text-xl font-bold mb-4">Tambah Karyawan</h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">NIP</label>
+                    <input type="text" id="inputNip" placeholder="EMP006" class="w-full border rounded-lg p-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Nama Lengkap</label>
+                    <input type="text" id="inputNama" placeholder="Nama karyawan..."
+                        class="w-full border rounded-lg p-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Divisi</label>
+                    <select id="inputDivisi" class="w-full border rounded-lg p-2">
+                        <option value="IT Development">IT Development</option>
+                        <option value="Human Resources">Human Resources</option>
+                        <option value="Finance">Finance</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Gaji Pokok (Rp)</label>
+                    <input type="number" id="inputGaji" placeholder="6000000" class="w-full border rounded-lg p-2">
+                </div>
+                <button onclick="tambahKaryawan()"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg">
+                    + Simpan ke Tabel
+                </button>
+            </div>
+        </div>
+
+        <!-- KOLOM KANAN (2 Kolom): Filter & Tabel Data -->
+        <div class="md:col-span-2 bg-white p-6 rounded-xl shadow-md">
+            <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4">
+                <h2 class="text-xl font-bold">Daftar Karyawan</h2>
+
+                <!-- Filter Divisi -->
+                <select id="filterDivisi" onchange="renderTabel()" class="border rounded-lg p-2 text-sm bg-slate-50">
+                    <option value="SEMUA">Semua Divisi</option>
+                    <option value="IT Development">IT Development</option>
+                    <option value="Human Resources">Human Resources</option>
+                    <option value="Finance">Finance</option>
+                </select>
+            </div>
+
+            <table class="w-full border-collapse text-sm">
+                <thead>
+                    <tr class="bg-slate-200 text-left uppercase text-slate-700">
+                        <th class="p-3 border">NIP</th>
+                        <th class="p-3 border">Nama</th>
+                        <th class="p-3 border">Divisi</th>
+                        <th class="p-3 border">Gaji</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelBody"></tbody>
+            </table>
+
+            <div class="mt-4 text-right font-bold text-slate-700">
+                Total Pengeluaran Gaji (Terfilter): <span id="totalPayroll" class="text-blue-700">Rp 0</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const dataKaryawan = [
+            { nip: "EMP001", nama: "Ahmad", divisi: "IT Development", gaji: 9500000 },
+            { nip: "EMP002", nama: "Amad", divisi: "Human Resources", gaji: 5500000 },
+            { nip: "EMP003", nama: "Ahad", divisi: "Finance", gaji: 7200000 },
+            { nip: "EMP004", nama: "Ahmed", divisi: "Human Resources", gaji: 11500000 },
+            { nip: "EMP005", nama: "Ahud", divisi: "IT Development", gaji: 4500000 }
+        ];
+
+        // Fungsi untuk menggambar ulang isi tabel berdasarkan filter
+        function renderTabel() {
+            const divisiPilihan = document.getElementById('filterDivisi').value;
+            const tbody = document.getElementById('tabelBody');
+
+            // 1. Menyaring data menggunakan .filter()
+            const dataTampil = dataKaryawan.filter((item) => {
+                if (divisiPilihan === "SEMUA") {
+                    return true; // Tampilkan semua
+                }
+                return item.divisi === divisiPilihan; // Hanya tampilkan yang divisinya cocok
+            });
+
+            let barisHTML = "";
+            let totalGaji = 0;
+
+            // 2. Mencetak data yang lolos filter ke HTML
+            dataTampil.forEach((item) => {
+                totalGaji += item.gaji;
+                barisHTML += `
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-3 border font-mono">${item.nip}</td>
+                        <td class="p-3 border font-medium">${item.nama}</td>
+                        <td class="p-3 border">${item.divisi}</td>
+                        <td class="p-3 border">Rp ${item.gaji.toLocaleString('id-ID')}</td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = barisHTML;
+            document.getElementById('totalPayroll').innerText = "Rp " + totalGaji.toLocaleString('id-ID');
+        }
+
+        // Fungsi saat tombol "+ Simpan ke Tabel" diklik
+        function tambahKaryawan() {
+            const nip = document.getElementById('inputNip').value;
+            const nama = document.getElementById('inputNama').value;
+            const divisi = document.getElementById('inputDivisi').value;
+            const gaji = Number(document.getElementById('inputGaji').value);
+
+            // TUGAS 1: Buat validasi if — jika nip kosong ATAU nama kosong ATAU gaji <= 0,
+            // munculkan alert("Semua data wajib diisi dengan benar!") lalu hentikan dengan return;
+            if (nip === "" || nama === "" || gaji <= 0) {
+                alert("Semua data wajib diisi dengan benar!");
+            }
+
+            // TUGAS 2: Masukkan data baru ke dalam array 'dataKaryawan' menggunakan .push()
+            // Petunjuk: dataKaryawan.push({ nip: nip, nama: nama, divisi: divisi, gaji: gaji });
+            dataKaryawan.push({ nip: nip, nama: nama, divisi: divisi, gaji: gaji });
+
+            // Mengosongkan kembali kotak input setelah disimpan
+            document.getElementById('inputNip').value = "";
+            document.getElementById('inputNama').value = "";
+            document.getElementById('inputGaji').value = "";
+
+            // TUGAS 3: Panggil fungsi renderTabel() di bawah ini agar tabel otomatis diperbarui!
+            renderTabel();
+        }
+
+        // Panggil renderTabel() pertama kali saat halaman dibuka
+        renderTabel();
+    </script>
+
+</body>
+
+</html>
