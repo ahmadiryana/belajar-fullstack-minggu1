@@ -93,40 +93,6 @@
             { nip: "EMP005", nama: "Ahud", divisi: "IT Development", gaji: 4500000 }
         ];
 
-        // Fungsi untuk menggambar ulang isi tabel berdasarkan filter
-        // function renderTabel() {
-        //     const divisiPilihan = document.getElementById('filterDivisi').value;
-        //     const tbody = document.getElementById('tabelBody');
-
-        //     // 1. Menyaring data menggunakan .filter()
-        //     const dataTampil = dataKaryawan.filter((item) => {
-        //         if (divisiPilihan === "SEMUA") {
-        //             return true; // Tampilkan semua
-        //         }
-        //         return item.divisi === divisiPilihan; // Hanya tampilkan yang divisinya cocok
-        //     });
-
-        //     let barisHTML = "";
-        //     let totalGaji = 0;
-
-        //     // 2. Mencetak data yang lolos filter ke HTML
-        //     dataTampil.forEach((item) => {
-        //         totalGaji += item.gaji;
-        //         barisHTML += `
-        //             <tr class="hover:bg-slate-50">
-        //                 <td class="p-3 border font-mono">${item.nip}</td>
-        //                 <td class="p-3 border font-medium">${item.nama}</td>
-        //                 <td class="p-3 border">${item.divisi}</td>
-        //                 <td class="p-3 border">Rp ${item.gaji.toLocaleString('id-ID')}</td>
-        //             </tr>
-        //         `;
-        //     });
-
-        //     tbody.innerHTML = barisHTML;
-        //     document.getElementById('totalPayroll').innerText = "Rp " + totalGaji.toLocaleString('id-ID');
-        // }
-
-
         function renderTabel() {
             const divisiPilihan = document.getElementById('filterDivisi').value;
             // Mengambil teks pencarian dan mengubahnya jadi huruf kecil semua
