@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem HR - Pendaftaran Karyawan</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Portal Internal Perusahaan</h1>
+        <p>Latihan Hari 1 - Calon Full-Stack Developer</p>
+    </header>
+
+    <main class="container">
+
+        <!-- Bagian 1: Tabel Data Karyawan -->
+        <section class="card">
+            <h2>Daftar Karyawan Aktif</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>NIP</th>
+                        <th>Nama Lengkap</th>
+                        <th>Divisi</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>EMP001</td>
+                        <td>Ahmad</td>
+                        <td>IT Development</td>
+                        <td>Aktif</td>
+                    </tr>
+                    <!-- TUGAS 1: Tambahkan minimal 2 baris data karyawan lagi di bawah ini -->
+                    <tr>
+                        <td>EMP002</td>
+                        <td>Amad</td>
+                        <td>Human Resources</td>
+                        <td>Aktif</td>
+                    </tr>
+                    <tr>
+                        <td>EMP003</td>
+                        <td>Ahad</td>
+                        <td>Finance & Accounting</td>
+                        <td>Aktif</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Bagian 2: Form Tambah Karyawan -->
+        <section class="card">
+            <h2>Formulir Tambah Karyawan Baru</h2>
+            <form action="#" method="POST">
+                <div>
+                    <label for="nip">Nomor Induk Pegawai (NIP):</label><br>
+                    <input type="text" id="nip" name="nip" placeholder="Contoh: EMP004" required>
+                </div>
+                <br>
+                <div>
+                    <label for="nama">Nama Lengkap:</label><br>
+                    <input type="text" id="nama" name="nama" required>
+                </div>
+                <br>
+                <div>
+                    <label for="divisi">Pilih Divisi:</label><br>
+                    <select id="divisi" name="divisi">
+                        <option value="IT">IT Development</option>
+                        <option value="HR">Human Resources</option>
+                        <option value="FIN">Finance & Accounting</option>
+                    </select>
+                </div>
+                <br>
+                <!-- TUGAS 2: Tambahkan 1 input untuk Email dan 1 input Radio Button untuk Jenis Kelamin -->
+                <div>
+                    <label for="email">Email:</label><br>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <br>
+                <div>
+                    <span>Jenis Kelamin:</span><br>
+                    <input type="radio" name="jenisKelamin" id="jkLaki" value="L" required>
+                    <label for="jkLaki">Laki-laki</label><br>
+                    <input type="radio" name="jenisKelamin" id="jkPerempuan" value="P">
+                    <label for="jkPerempuan">Perempuan</label>
+                </div>
+                <br>
+                <button type="submit">Simpan Data</button>
+            </form>
+        </section>
+    </main>
+
+</body>
+
+</html>

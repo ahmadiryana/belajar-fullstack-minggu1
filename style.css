@@ -1,0 +1,84 @@
+/* Aturan dasar halaman */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f9;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+header {
+    background-color: #1e293b;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+/* Flexbox: Membuat 2 section berjejer ke samping */
+.container {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+/* Desain kotak putih (Card) */
+.card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex: 1;
+}
+
+/* Menghias Tabel */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th,
+td {
+    border: 1px solid #cbd5e1;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #e2e8f0;
+}
+
+/* Menghias Input Form */
+input[type="text"],
+input[type="email"],
+select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* TUGAS HARI 2: 
+   Buat styling untuk elemen <button> dengan ketentuan:
+   1. Warna latar (background-color) biru tua atau hijau
+   2. Warna teks (color) putih
+   3. Tanpa garis tepi (border: none)
+   4. Jarak dalam (padding) 10px 15px dan sudut melengkung (border-radius: 4px)
+   5. Kursor berubah jadi telunjuk saat disentuh (cursor: pointer)
+*/
+
+button {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #1d4ed8;
+}
