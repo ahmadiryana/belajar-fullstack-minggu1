@@ -48,14 +48,20 @@
         <div class="md:col-span-2 bg-white p-6 rounded-xl shadow-md">
             <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4">
                 <h2 class="text-xl font-bold">Daftar Karyawan</h2>
+                <div class="flex gap-2">
+                    <!-- Input Live Search (oninput otomatis jalan setiap jari mengetik 1 huruf) -->
+                    <input type="text" id="inputCari" oninput="renderTabel()" placeholder="Cari nama / NIP..."
+                        class="border rounded-lg p-2 text-sm">
 
-                <!-- Filter Divisi -->
-                <select id="filterDivisi" onchange="renderTabel()" class="border rounded-lg p-2 text-sm bg-slate-50">
-                    <option value="SEMUA">Semua Divisi</option>
-                    <option value="IT Development">IT Development</option>
-                    <option value="Human Resources">Human Resources</option>
-                    <option value="Finance">Finance</option>
-                </select>
+                    <!-- Filter Divisi -->
+                    <select id="filterDivisi" onchange="renderTabel()"
+                        class="border rounded-lg p-2 text-sm bg-slate-50">
+                        <option value="SEMUA">Semua Divisi</option>
+                        <option value="IT Development">IT Development</option>
+                        <option value="Human Resources">Human Resources</option>
+                        <option value="Finance">Finance</option>
+                    </select>
+                </div>
             </div>
 
             <table class="w-full border-collapse text-sm">
@@ -65,6 +71,7 @@
                         <th class="p-3 border">Nama</th>
                         <th class="p-3 border">Divisi</th>
                         <th class="p-3 border">Gaji</th>
+                        <th class="p-3 border text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody id="tabelBody"></tbody>
@@ -87,36 +94,98 @@
         ];
 
         // Fungsi untuk menggambar ulang isi tabel berdasarkan filter
+        // function renderTabel() {
+        //     const divisiPilihan = document.getElementById('filterDivisi').value;
+        //     const tbody = document.getElementById('tabelBody');
+
+        //     // 1. Menyaring data menggunakan .filter()
+        //     const dataTampil = dataKaryawan.filter((item) => {
+        //         if (divisiPilihan === "SEMUA") {
+        //             return true; // Tampilkan semua
+        //         }
+        //         return item.divisi === divisiPilihan; // Hanya tampilkan yang divisinya cocok
+        //     });
+
+        //     let barisHTML = "";
+        //     let totalGaji = 0;
+
+        //     // 2. Mencetak data yang lolos filter ke HTML
+        //     dataTampil.forEach((item) => {
+        //         totalGaji += item.gaji;
+        //         barisHTML += `
+        //             <tr class="hover:bg-slate-50">
+        //                 <td class="p-3 border font-mono">${item.nip}</td>
+        //                 <td class="p-3 border font-medium">${item.nama}</td>
+        //                 <td class="p-3 border">${item.divisi}</td>
+        //                 <td class="p-3 border">Rp ${item.gaji.toLocaleString('id-ID')}</td>
+        //             </tr>
+        //         `;
+        //     });
+
+        //     tbody.innerHTML = barisHTML;
+        //     document.getElementById('totalPayroll').innerText = "Rp " + totalGaji.toLocaleString('id-ID');
+        // }
+
+
         function renderTabel() {
             const divisiPilihan = document.getElementById('filterDivisi').value;
+            // Mengambil teks pencarian dan mengubahnya jadi huruf kecil semua
+            const kataKunci = document.getElementById('inputCari').value.toLowerCase();
             const tbody = document.getElementById('tabelBody');
 
-            // 1. Menyaring data menggunakan .filter()
+            // 1. Menyaring data berdasarkan Divisi DAN Kata Kunci Pencarian
             const dataTampil = dataKaryawan.filter((item) => {
-                if (divisiPilihan === "SEMUA") {
-                    return true; // Tampilkan semua
-                }
-                return item.divisi === divisiPilihan; // Hanya tampilkan yang divisinya cocok
+                const cocokDivisi = (divisiPilihan === "SEMUA") || (item.divisi === divisiPilihan);
+
+                // TUGAS 1: Buat variabel 'cocokKataKunci' yang mengecek apakah item.nama.toLowerCase() 
+                // ATAU item.nip.toLowerCase() mengandung (.includes) 'kataKunci'
+                // Petunjuk: const cocokKataKunci = item.nama.toLowerCase().includes(kataKunci) || item.nip.toLowerCase().includes(kataKunci);
+                const cocokKataKunci = item.nama.toLowerCase().includes(kataKunci) || item.nip.toLowerCase().includes(kataKunci);
+
+                // Hanya tampilkan jika cocokDivisi DAN (&&) cocokKataKunci bernilai true
+                return cocokDivisi && cocokKataKunci;
             });
 
             let barisHTML = "";
             let totalGaji = 0;
 
-            // 2. Mencetak data yang lolos filter ke HTML
             dataTampil.forEach((item) => {
                 totalGaji += item.gaji;
                 barisHTML += `
-                    <tr class="hover:bg-slate-50">
-                        <td class="p-3 border font-mono">${item.nip}</td>
-                        <td class="p-3 border font-medium">${item.nama}</td>
-                        <td class="p-3 border">${item.divisi}</td>
-                        <td class="p-3 border">Rp ${item.gaji.toLocaleString('id-ID')}</td>
-                    </tr>
-                `;
+            <tr class="hover:bg-slate-50">
+                <td class="p-3 border font-mono">${item.nip}</td>
+                <td class="p-3 border font-medium">${item.nama}</td>
+                <td class="p-3 border">${item.divisi}</td>
+                <td class="p-3 border">Rp ${item.gaji.toLocaleString('id-ID')}</td>
+                <td class="p-3 border text-center">
+                    <button onclick="hapusKaryawan('${item.nip}')" class="bg-red-100 hover:bg-red-200 text-red-700 px-2 py-1 rounded text-xs font-semibold">
+                        Hapus
+                    </button>
+                </td>
+            </tr>
+        `;
             });
 
             tbody.innerHTML = barisHTML;
             document.getElementById('totalPayroll').innerText = "Rp " + totalGaji.toLocaleString('id-ID');
+        }
+
+        // Fungsi untuk menghapus karyawan berdasarkan NIP
+        function hapusKaryawan(nipTarget) {
+            const yakin = confirm("Apakah Anda yakin ingin menghapus karyawan dengan NIP " + nipTarget + "?");
+            if (!yakin) {
+                return; // Batal hapus jika user klik Cancel
+            }
+
+            // Mencari posisi urutan (index) karyawan di dalam array dataKaryawan
+            const index = dataKaryawan.findIndex((item) => item.nip === nipTarget);
+
+            if (index !== -1) {
+                // TUGAS 2: Hapus 1 data pada posisi 'index' menggunakan dataKaryawan.splice(index, 1);
+                dataKaryawan.splice(index, 1);
+                // TUGAS 3: Panggil kembali fungsi renderTabel() agar tampilan tabel ter-update!
+                renderTabel();
+            }
         }
 
         // Fungsi saat tombol "+ Simpan ke Tabel" diklik
@@ -130,11 +199,12 @@
             // munculkan alert("Semua data wajib diisi dengan benar!") lalu hentikan dengan return;
             if (nip === "" || nama === "" || gaji <= 0) {
                 alert("Semua data wajib diisi dengan benar!");
+                return;
             }
 
             // TUGAS 2: Masukkan data baru ke dalam array 'dataKaryawan' menggunakan .push()
             // Petunjuk: dataKaryawan.push({ nip: nip, nama: nama, divisi: divisi, gaji: gaji });
-            dataKaryawan.push({ nip: nip, nama: nama, divisi: divisi, gaji: gaji });
+            dataKaryawan.push({ nip, nama, divisi, gaji });
 
             // Mengosongkan kembali kotak input setelah disimpan
             document.getElementById('inputNip').value = "";
